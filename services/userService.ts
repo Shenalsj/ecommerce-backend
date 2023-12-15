@@ -48,10 +48,12 @@ async function createNewOne({
   name,
   email,
   password,
+  avatar,
 }: {
   name: string;
   email: string;
   password: string;
+  avatar: string;
 }) {
   const hashedPassword = bcrypt.hashSync(password, 10);
   console.log("HashedPassword:", hashedPassword);
@@ -64,12 +66,14 @@ async function createNewOne({
     name,
     email,
     password: hashedPassword,
+    avatar,
   });
   await user.save();
   const userWithoutPass = {
     name: user.name,
     email: user.email,
     role: user.role,
+    avatar: user.avatar,
   };
   return userWithoutPass;
 }
@@ -102,6 +106,7 @@ async function login(email: string, password: string) {
     userId: user.id,
     email: user.email,
     role: user.role,
+    avatar: user.avatar,
   };
   const accessToken = jwt.sign(payload, process.env.TOKEN_SECRET as string, {
     expiresIn: "1h",
@@ -130,6 +135,7 @@ async function refreshToken(refreshToken: string) {
       userId: decoded.userId,
       email: decoded.email,
       role: decoded.role,
+      avatar: decoded.avatar,
     };
     const accessToken = jwt.sign(payload, process.env.TOKEN_SECRET as string, {
       expiresIn: "12h",
@@ -168,6 +174,7 @@ async function getProfile(token: string) {
       email: user.email,
       role: user.role,
       id: user._id,
+      avatar: user.avatar,
     };
     return userWithoutPass;
   } catch (error) {

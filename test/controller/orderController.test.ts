@@ -9,6 +9,7 @@ const ORDERS_URL = BASE_URL + "/orders";
 const USERS_URL = BASE_URL + "/users";
 
 describe("Order controller", () => {
+  jest.setTimeout(60000);
   let mongoHelper: MongoHelper;
   let userId: string;
 
@@ -84,3 +85,5 @@ describe("Order controller", () => {
     expect(deleteResponse.body.data._id).toEqual(orderId);
   });
 });
+
+

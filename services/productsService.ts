@@ -9,7 +9,8 @@ async function paginateProducts(pageNumber: number, pageSize: number) {
 }
 
 async function findAll() {
-  const products = await ProductRepo.find().populate("categoryId").exec();
+  // const products = await ProductRepo.find().populate("categoryId").exec();
+  const products = await ProductRepo.find();
   return products;
 }
 
@@ -49,6 +50,17 @@ async function deleteOne(productId: string) {
   return product;
 }
 
+async function findProductByTitle(title: string) {
+  const products = await ProductRepo.find();
+  const filteredProducts: any = products.filter((product) => {
+    console.log(product.name.toLowerCase().startsWith(title.toLowerCase()));
+    return product.name.toLowerCase().startsWith(title.toLowerCase());
+    // .populate("categoryId")
+    // .exec();
+  });
+  return filteredProducts;
+}
+
 export default {
   findOne,
   findAll,
@@ -56,4 +68,5 @@ export default {
   updateOne,
   deleteOne,
   paginateProducts,
+  findProductByTitle,
 };

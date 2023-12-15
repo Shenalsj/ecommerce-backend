@@ -6,12 +6,23 @@ import { Product } from "../types/products";
 const ProductController = {
   async findAllProduct(req: Request, res: Response) {
     try {
-      const pageNumber = Number(req.query.pageNumber) || 1;
-      const pageSize = Number(req.query.pageSize) || 10;
-      const products = await ProductsService.paginateProducts(
-        pageNumber,
-        pageSize
-      );
+      // const pageNumber = Number(req.query.pageNumber) || 1;
+      // const pageSize = Number(req.query.pageSize) || 10;
+      // const products = await ProductsService.paginateProducts(
+      //   pageNumber,
+      //   pageSize
+      // );
+      const products = await ProductsService.findAll();
+      res.json(products);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
+  async findProductByTitle(req: Request, res: Response) {
+    try {
+      const title = req.params.title;
+      const products = await ProductsService.findProductByTitle(title);
       res.json(products);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
