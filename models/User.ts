@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const UserSchema = new Schema({
-  //id: ObjectId,
   name: {
     type: String,
     required: true,

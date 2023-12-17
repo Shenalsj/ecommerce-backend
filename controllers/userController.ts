@@ -19,7 +19,6 @@ export async function getOffsetUser(
     next(ApiError.internal("Internal Server error"));
   }
   next(ResponseHandler.resourceFetched(JSON.stringify(users)));
-  //res.json(users);
 }
 
 export async function findAllUser(_: Request, res: Response) {
@@ -32,19 +31,19 @@ export async function findOneUser(
   res: Response,
   next: NextFunction
 ) {
-  const userId = Number(req.params.userId);
-  // if(userId.length!==24){
-  //   next(ApiError.internal("ID must be a 24 character hex string, 12 byte Uint8Array, or an integer"))
-  //   return
-  // }
-  const user = await UsersService.findOne(userId);
+  try {
+    const userId = Number(req.params.userId);
 
-  if (!user) {
-    next(ApiError.resourceNotFound("User not found."));
-    return;
+    const user = await UsersService.findOne(userId);
+
+    if (!user) {
+      throw ApiError.resourceNotFound("User not found.");
+    }
+
+    next(ResponseHandler.resourceFetched(JSON.stringify(user)));
+  } catch (error) {
+    next(error);
   }
-  next(ResponseHandler.resourceFetched(JSON.stringify(user)));
-  // res.json({ user });
 }
 
 export async function createOneUser(
@@ -63,7 +62,6 @@ export async function createOneUser(
       `User with ${user._id} has been added`
     )
   );
-  // res.status(201).json({ user });
 }
 
 export async function findOneAndUpdate(
@@ -85,7 +83,6 @@ export async function findOneAndUpdate(
       `User with ${updatedUser._id} has been updated`
     )
   );
-  //res.status(200).json({ updatedUser });
 }
 
 export async function findOneAndDelete(
@@ -106,10 +103,8 @@ export async function findOneAndDelete(
       `User with ${deletedUser._id} has been Deleted`
     )
   );
-  // res.status(200).json("User deleted ...");
 }
 
-//SignUp
 export async function signup(req: Request, res: Response, next: NextFunction) {
   const { name, email, password, avatar } = req.body;
   const user = await UsersService.createNewOne({
@@ -128,16 +123,13 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
   next(
     ResponseHandler.resourceCreated(JSON.stringify(user), `User has been added`)
   );
-  // res.status(201).json({message: "user created",user,})
 }
 
-//login
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
   const login = await UsersService.login(email, password);
 
   if (login.status === false) {
-    // TODO throw API error
     res.status(400).json({ accessToken: null, message: "Bad credentials" });
     return;
   }
@@ -149,7 +141,6 @@ export async function login(req: Request, res: Response) {
   });
 }
 
-// refresh token
 export async function refreshToken(req: Request, res: Response) {
   const refreshToken = req.body.refreshToken;
   if (!refreshToken) {
@@ -164,11 +155,9 @@ export async function refreshToken(req: Request, res: Response) {
   res.json(newTokenPair);
 }
 
-// get profile from token
 export async function getProfile(req: Request, res: Response) {
-  // const token = req.headers.authorization?.split(" ")[1];
   const token = req.body.token;
-  console.log(token, "profile token");
+
   if (!token) {
     res.status(401).json({ message: "Token is required" });
     return;

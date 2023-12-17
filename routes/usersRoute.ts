@@ -18,14 +18,4 @@ router.post("/login", UserController.login);
 router.post("/refresh-token", UserController.refreshToken);
 router.post("/profile", UserController.getProfile);
 
-// router.use((req, res, next) => {
-//     console.log("👀 got here")
-//     res.on("finish", () => {
-//       console.log("Record created:", {
-//         /* log data */
-//       })
-//     })
-//     next()
-//   })
-
 export default router;

@@ -5,6 +5,5 @@ export function loggingMiddleware(
   _: Response,
   next: NextFunction
 ) {
-  console.log("👀 [INFO]: ", req.method, req.path)
   next()
 }

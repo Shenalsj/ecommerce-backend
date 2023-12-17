@@ -22,7 +22,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// TODO: Validate .env using Zod
+
 if (process.env.NODE_ENV === "DEV" || process.env.NODE_ENV === "PRODUCTION") {
   const mongoURL = process.env.DB_URL as string;
   mongoose.connect(mongoURL).then(() => console.log("Connected!"));

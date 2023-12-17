@@ -1,6 +1,5 @@
 import mongoose, { ObjectId } from "mongoose";
 import UserRepo from "../models/User";
-//import { User } from "../types/users.js"
 import { User } from "../types/users";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -43,7 +42,6 @@ async function findOneByEmail(email: string) {
   return UserRepo.findOne({ email });
 }
 
-//signup
 async function createNewOne({
   name,
   email,
@@ -56,7 +54,6 @@ async function createNewOne({
   avatar: string;
 }) {
   const hashedPassword = bcrypt.hashSync(password, 10);
-  console.log("HashedPassword:", hashedPassword);
 
   const userFromDB = await findOneByEmail(email);
   if (userFromDB) {
@@ -78,7 +75,6 @@ async function createNewOne({
   return userWithoutPass;
 }
 
-//login
 async function login(email: string, password: string) {
   const user = await findOneByEmail(email);
   if (!user) {
@@ -90,8 +86,6 @@ async function login(email: string, password: string) {
   }
 
   const hashedPassword = user.password;
-  console.log("hashedPassword==", hashedPassword);
-  console.log("Password==", password);
 
   const isValid = bcrypt.compareSync(password, hashedPassword);
   if (!isValid) {
@@ -114,8 +108,6 @@ async function login(email: string, password: string) {
   const refreshToken = jwt.sign(payload, process.env.TOKEN_SECRET as string, {
     expiresIn: "7d",
   });
-  console.log("AccessToken:", accessToken);
-  console.log("RefreshToken:", refreshToken);
 
   return {
     message: "valid credentials",
@@ -158,7 +150,6 @@ async function refreshToken(refreshToken: string) {
   }
 }
 
-// get profile
 async function getProfile(token: string) {
   try {
     const decoded = jwt.verify(

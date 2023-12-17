@@ -14,12 +14,6 @@ router.put("/:id", OrderController.updateOrder);
 router.delete("/:id", OrderController.deleteOrder);
 
 router.use((req, res, next) => {
-  res.on("finish", () => {
-    console.log("Record created:", {
-      req,
-      /* log data */
-    });
-  });
   next();
 });
 

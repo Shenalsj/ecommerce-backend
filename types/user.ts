@@ -19,4 +19,3 @@ export type User = {
   password: string
   role: Role
 }
-//new type file user.ts according to lecture

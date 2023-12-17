@@ -17,12 +17,10 @@ const CategoryController = {
     );
 
     next(ResponseHandler.resourceFetched(JSON.stringify(categories)));
-    //res.json(categories);
   },
   async getAllCategories(req: Request, res: Response, next: NextFunction) {
     const categories = await CategoryService.findAll();
     res.json(categories);
-    // next(ResponseHandler.resourceFetched(JSON.stringify(categories)))
   },
   async getCategoryById(req: Request, res: Response, next: NextFunction) {
     const categoryId = req.params.id;
@@ -40,7 +38,6 @@ const CategoryController = {
       return;
     }
     next(ResponseHandler.resourceFetched(JSON.stringify(item)));
-    //res.json(item);
   },
   async createCategory(req: Request, res: Response, next: NextFunction) {
     const category = req.body;
@@ -54,7 +51,6 @@ const CategoryController = {
         `Category with ${newCategory._id} has been added`
       )
     );
-    //res.status(201).json({message: `Category with ${newCategory._id} has been added`});
   },
   async updateCategory(req: Request, res: Response, next: NextFunction) {
     const categoryId = req.params.id;
